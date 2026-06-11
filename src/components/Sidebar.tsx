@@ -1,13 +1,21 @@
 import { theme } from '../theme'
-import { diagrams } from '../diagrams'
 import { icons } from '../icons'
+import type { Collection, DiagramDef } from '../diagrams'
 
 export function Sidebar({
+  collections,
+  activeCollectionId,
+  onSelectCollection,
+  diagrams,
   activeId,
   onSelect,
   autoPlay,
   onToggleAutoPlay,
 }: {
+  collections: Collection[]
+  activeCollectionId: string
+  onSelectCollection: (id: string) => void
+  diagrams: DiagramDef[]
   activeId: string
   onSelect: (id: string) => void
   autoPlay: boolean
@@ -26,7 +34,7 @@ export function Sidebar({
         display: 'flex',
         flexDirection: 'column',
         padding: 20,
-        gap: 18,
+        gap: 16,
         overflowY: 'auto',
       }}
     >
@@ -44,9 +52,37 @@ export function Sidebar({
         </div>
       </div>
 
+      {/* View dropdown: switch between the plain-language use cases and the technical diagrams */}
+      <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <span style={{ fontSize: 11, color: theme.textMuted, fontWeight: 600, letterSpacing: 0.3 }}>
+          VIEW
+        </span>
+        <select
+          value={activeCollectionId}
+          onChange={(e) => onSelectCollection(e.target.value)}
+          style={{
+            width: '100%',
+            cursor: 'pointer',
+            background: theme.panel,
+            color: theme.text,
+            border: `1px solid ${theme.panelBorder}`,
+            borderRadius: 10,
+            padding: '10px 12px',
+            fontSize: 14,
+            fontWeight: 600,
+          }}
+        >
+          {collections.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.label}
+            </option>
+          ))}
+        </select>
+      </label>
+
       <button
         onClick={onToggleAutoPlay}
-        title="Cycle through the use cases automatically — pause to explain one"
+        title="Cycle through the diagrams automatically — pause to explain one"
         style={{
           cursor: 'pointer',
           textAlign: 'left',
@@ -63,7 +99,7 @@ export function Sidebar({
         }}
       >
         <span style={{ fontSize: 13 }}>{autoPlay ? '⏸' : '▶'}</span>
-        {autoPlay ? 'Pause auto-play' : 'Auto-play use cases'}
+        {autoPlay ? 'Pause auto-play' : 'Auto-play'}
       </button>
 
       <nav style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

@@ -12,6 +12,8 @@ export type ServiceNodeData = {
   icon?: string
   /** Extra badge text rendered on the node (e.g. "Materialized Views") */
   badge?: string
+  /** Highlighted performance/scale stats rendered as pills (e.g. "Sub-second", "Petabyte scale") */
+  stats?: string[]
   /** Visually emphasize this node (used for the ClickHouse hub) */
   hero?: boolean
   /** Allow Record<string, unknown> compatibility for React Flow */

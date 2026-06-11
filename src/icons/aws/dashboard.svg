@@ -1,0 +1,6 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="da" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ECB6E"/><stop offset="1" stop-color="#2A9E4D"/></linearGradient></defs>
+<rect width="80" height="80" rx="14" fill="url(#da)"/>
+<rect x="15" y="18" width="50" height="36" rx="4" fill="#FFFFFF"/>
+<polyline points="22,46 32,34 41,41 52,25 58,30" fill="none" stroke="#2A9E4D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="30" y="58" width="20" height="5" rx="2.5" fill="#FFFFFF"/></svg>

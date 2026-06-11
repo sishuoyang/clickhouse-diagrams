@@ -110,6 +110,28 @@ export function ServiceNode({ data, selected }: NodeProps<ServiceNodeType>) {
         </div>
       )}
 
+      {data.stats && data.stats.length > 0 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+          {data.stats.map((s, i) => (
+            <span
+              key={i}
+              style={{
+                fontSize: 10.5,
+                fontWeight: 700,
+                color: theme.yellow,
+                background: `${theme.yellow}14`,
+                border: `1px solid ${theme.yellow}66`,
+                borderRadius: 999,
+                padding: '2px 8px',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+      )}
+
       <Handle id="r" type="source" position={Position.Right} style={handleStyle} />
       <Handle id="sl" type="source" position={Position.Left} style={handleStyle} />
       <Handle id="st" type="source" position={Position.Top} style={handleStyle} />

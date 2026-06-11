@@ -61,6 +61,15 @@ import bi from './aws/bi.svg?raw'
 import sql from './aws/sql.svg?raw'
 import user from './aws/user.svg?raw'
 
+// Friendly glyphs for the non-technical "use cases" diagrams
+import people from './aws/people.svg?raw'
+import cart from './aws/cart.svg?raw'
+import dashboard from './aws/dashboard.svg?raw'
+import store from './aws/store.svg?raw'
+import globe from './aws/globe.svg?raw'
+import robot from './aws/robot.svg?raw'
+import docs from './aws/docs.svg?raw'
+
 const raw = {
   clickhouse,
   apigateway,
@@ -108,6 +117,13 @@ const raw = {
   bi,
   sql,
   user,
+  people,
+  cart,
+  dashboard,
+  store,
+  globe,
+  robot,
+  docs,
 } as const
 
 export type IconKey = keyof typeof raw

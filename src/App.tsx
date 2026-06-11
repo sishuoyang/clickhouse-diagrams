@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { DiagramCanvas } from './components/DiagramCanvas'
 import { Sidebar } from './components/Sidebar'
 import { Controls } from './components/Controls'
-import { diagramById, defaultDiagramId, diagrams } from './diagrams'
+import { diagramById, defaultDiagramId, diagrams, collections, collectionOf } from './diagrams'
 
 function readParams() {
   const p = new URLSearchParams(window.location.search)
@@ -18,6 +18,12 @@ export default function App() {
   const [activeId, setActiveId] = useState(initial)
   const [autoPlay, setAutoPlay] = useState(false)
   const active = diagramById[activeId] ?? diagrams[0]
+  const activeCollection = collectionOf(activeId)
+
+  const onSelectCollection = (id: string) => {
+    const c = collections.find((x) => x.id === id)
+    if (c) setActiveId(c.diagrams[0].id)
+  }
 
   // Keep the URL in sync so a diagram can be deep-linked (interactive mode only).
   useEffect(() => {
@@ -27,13 +33,14 @@ export default function App() {
     window.history.replaceState({}, '', u)
   }, [activeId, capture])
 
-  // Auto-play: cycle through the use cases one by one. Keyed on activeId so each diagram (whether
-  // reached automatically or by a manual click) gets the full interval; Pause just stops here.
+  // Auto-play: cycle through the current view's diagrams one by one. Keyed on activeId so each
+  // diagram (whether reached automatically or by a manual click) gets the full interval.
   useEffect(() => {
     if (capture || !autoPlay) return
     const t = setTimeout(() => {
-      const idx = diagrams.findIndex((d) => d.id === activeId)
-      setActiveId(diagrams[(idx + 1) % diagrams.length].id)
+      const list = collectionOf(activeId).diagrams
+      const idx = list.findIndex((d) => d.id === activeId)
+      setActiveId(list[(idx + 1) % list.length].id)
     }, AUTOPLAY_INTERVAL)
     return () => clearTimeout(t)
   }, [autoPlay, activeId, capture])
@@ -42,6 +49,10 @@ export default function App() {
     <div style={{ display: 'flex', height: '100%', width: '100%' }}>
       {!capture && (
         <Sidebar
+          collections={collections}
+          activeCollectionId={activeCollection.id}
+          onSelectCollection={onSelectCollection}
+          diagrams={activeCollection.diagrams}
           activeId={activeId}
           onSelect={setActiveId}
           autoPlay={autoPlay}

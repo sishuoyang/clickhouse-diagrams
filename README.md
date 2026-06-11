@@ -12,6 +12,16 @@ integrate with ClickHouse across four use cases:
 Each diagram is laid out as **SA-style stage columns** (Data Sources → Collection/Ingestion → Streaming/ETL → Realtime Data Warehouse → Visualization) with explicit Amazon service names and an explicit **ClickPipes** ingestion node.
 4. **Machine Learning / Gen AI** — LibreChat runs its *own* agent framework, calling **Amazon Bedrock foundation models** (validated by **Bedrock Guardrails**) and using **MCP tools** — the **ClickHouse MCP server** for vector search/analytics, plus Lambda actions; RAG is indexed **event-driven (S3 event → Lambda → Bedrock embeddings → ClickHouse)**, and every message is traced to **Langfuse** (stored in ClickHouse). ClickHouse is the shared vector store, analytics tool, and observability backend
 
+## Two views (dropdown in the sidebar)
+
+A **View** dropdown switches the whole app between two sets of four diagrams:
+
+- **Use Cases** — plain-language, non-technical illustrations of the same four scenarios using
+  everyday examples (an online store's live dashboard, a retail chain's combined data, keeping a
+  website healthy, an AI assistant answering from company knowledge). No AWS jargon — for explaining
+  *what* ClickHouse does to non-technical audiences. (`uc-*` GIFs.)
+- **Architecture Diagrams** — the technical AWS reference architectures above (for SAs/engineers).
+
 Built with **React + Vite + [React Flow](https://reactflow.dev) (`@xyflow/react`)**. Data flows
 are shown as glowing particles pulsing along the edges, driven by a single deterministic clock so
 they can be exported as perfectly looping GIFs.
