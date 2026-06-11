@@ -89,6 +89,5 @@ export const ucGenai: DiagramDef = {
     edge('assistant', 'clickhouse', { label: 'Finds the answer' }),
     edge('assistant', 'customer', { color: '#34D399', label: 'Accurate answer' }, { sourceHandle: 'sb', targetHandle: 'b' }),
     edge('assistant', 'langfuse', { label: 'Logs every chat' }),
-    edge('langfuse', 'clickhouse', { color: '#34D399', label: 'Stored in ClickHouse' }, { sourceHandle: 'st', targetHandle: 'b' }),
   ],
 }
