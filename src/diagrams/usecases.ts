@@ -70,22 +70,25 @@ export const ucObservability: DiagramDef = {
   ],
 }
 
-// 4) ML / Gen AI — an AI assistant that answers using company knowledge
+// 4) ML / Gen AI — an AI assistant that answers using company knowledge, monitored by Langfuse
 export const ucGenai: DiagramDef = {
   id: 'uc-genai',
   title: 'Machine Learning / Gen AI',
   description:
-    'An AI assistant answers customer questions accurately by looking up the company’s own knowledge — manuals, FAQs and docs — stored in ClickHouse.',
+    'An AI assistant answers customer questions accurately by looking up the company’s own knowledge — manuals, FAQs and docs — stored in ClickHouse. Langfuse traces every conversation (also in ClickHouse) so the team can watch quality and improve the AI.',
   nodes: [
-    cnode('knowledge', 840, 110, { label: 'Company Knowledge', sub: 'Manuals · FAQs · docs', category: 'source', icon: 'docs' }),
-    cnode('customer', 160, 360, { label: 'Customer', sub: 'Asks a question', category: 'source', icon: 'user' }),
-    cnode('assistant', 500, 360, { label: 'AI Assistant', sub: 'Understands & replies', category: 'agent', icon: 'robot' }),
-    cnode('clickhouse', 840, 360, { label: 'ClickHouse', sub: 'The AI’s searchable memory', category: 'clickhouse', icon: 'clickhouse', badge: 'Knowledge', stats: ['Vector search in ms', 'Billions of vectors'], hero: true }),
+    cnode('knowledge', 830, 80, { label: 'Company Knowledge', sub: 'Manuals · FAQs · docs', category: 'source', icon: 'docs' }),
+    cnode('customer', 150, 350, { label: 'Customer', sub: 'Asks a question', category: 'source', icon: 'user' }),
+    cnode('assistant', 490, 350, { label: 'AI Assistant', sub: 'Understands & replies', category: 'agent', icon: 'robot' }),
+    cnode('clickhouse', 830, 350, { label: 'ClickHouse', sub: 'The AI’s searchable memory', category: 'clickhouse', icon: 'clickhouse', badge: 'Knowledge', stats: ['Vector search in ms', 'Billions of vectors'], hero: true }),
+    cnode('langfuse', 830, 620, { label: 'Langfuse', sub: 'Tracks & improves the AI', category: 'consume', icon: 'langfuse', badge: 'Powered by ClickHouse' }),
   ],
   edges: [
     edge('knowledge', 'clickhouse', { label: 'Learns from' }, { targetHandle: 't' }),
     edge('customer', 'assistant', { label: 'Question' }),
     edge('assistant', 'clickhouse', { label: 'Finds the answer' }),
     edge('assistant', 'customer', { color: '#34D399', label: 'Accurate answer' }, { sourceHandle: 'sb', targetHandle: 'b' }),
+    edge('assistant', 'langfuse', { label: 'Logs every chat' }),
+    edge('langfuse', 'clickhouse', { color: '#34D399', label: 'Stored in ClickHouse' }, { sourceHandle: 'st', targetHandle: 'b' }),
   ],
 }
