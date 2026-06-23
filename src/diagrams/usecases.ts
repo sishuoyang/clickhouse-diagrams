@@ -10,6 +10,11 @@ export const ucRealtime: DiagramDef = {
   description:
     'As shoppers browse and buy, ClickHouse updates a live dashboard the instant it happens — so the team can see what’s selling and react in seconds.',
   nodes: [
+    cnode('logo', 200, 24, { label: 'In production at', category: 'source', logos: [
+      { icon: 'cloudflare', name: 'Cloudflare', url: 'https://clickhouse.com/blog/cloudflare' },
+      { icon: 'gitlab', name: 'GitLab', url: 'https://clickhouse.com/blog/how-gitlab-uses-clickhouse-to-scale-analytical-workloads' },
+      { icon: 'vimeo', name: 'Vimeo', url: 'https://clickhouse.com/blog/behind-the-scenes-how-clickhouse-helps-vimeo-power-video-analytics-at-scale' },
+    ] }, { type: 'customer', w: 320 }),
     cnode('shoppers', 160, 330, { label: 'Online Shoppers', sub: 'Browsing & buying', category: 'source', icon: 'people' }),
     cnode('storeapp', 480, 330, { label: 'Store Website & App', sub: 'Every click & order', category: 'source', icon: 'cart' }),
     cnode('clickhouse', 820, 330, { label: 'ClickHouse', sub: 'Crunches every event instantly', category: 'clickhouse', icon: 'clickhouse', badge: 'Live', stats: ['Millions of rows/sec', 'Sub-second queries'], hero: true }),
@@ -31,6 +36,11 @@ export const ucWarehouse: DiagramDef = {
   description:
     'ClickHouse brings together sales from every store, the website, and the app — so leaders can answer big questions across years of data in seconds.',
   nodes: [
+    cnode('logo', 200, 30, { label: 'In production at', category: 'source', logos: [
+      { icon: 'lyft', name: 'Lyft', url: 'https://clickhouse.com/blog/lyft-analytics-clickhouse-cloud' },
+      { icon: 'canva', name: 'Canva', url: 'https://clickhouse.com/blog/canva-faster-search-lower-costs' },
+      { icon: 'deepnote', name: 'Deepnote', url: 'https://clickhouse.com/blog/clickhouse-deepnote-data-notebooks-collaborative-analytics' },
+    ] }, { type: 'customer', w: 320 }),
     cnode('stores', 160, 200, { label: 'Store Sales', sub: 'Every location', category: 'source', icon: 'store' }),
     cnode('online', 160, 360, { label: 'Online Orders', sub: 'The website', category: 'source', icon: 'cart' }),
     cnode('app', 160, 520, { label: 'Mobile App', sub: 'Loyalty & usage', category: 'source', icon: 'apps' }),
@@ -54,6 +64,12 @@ export const ucObservability: DiagramDef = {
   description:
     'Apps and the website constantly report how they’re doing, and ClickHouse watches it all. A human SRE keeps an eye on the live dashboard during working hours — and around the clock an AI SRE agent monitors the data, automatically detecting and explaining problems and paging a human the moment something breaks, even after hours.',
   nodes: [
+    cnode('logo', 230, 24, { label: 'In production at', category: 'source', logos: [
+      { icon: 'tesla', name: 'Tesla', url: 'https://clickhouse.com/blog/how-tesla-built-quadrillion-scale-observability-platform-on-clickhouse' },
+      { icon: 'netflix', name: 'Netflix', url: 'https://clickhouse.com/blog/netflix-petabyte-scale-logging' },
+      { icon: 'openai', name: 'OpenAI', url: 'https://clickhouse.com/blog/why-openai-uses-clickhouse-for-petabyte-scale-observability' },
+      { icon: 'anthropic', name: 'Anthropic', url: 'https://clickhouse.com/blog/how-anthropic-is-using-clickhouse-to-scale-observability-for-ai-era' },
+    ] }, { type: 'customer', w: 400 }),
     cnode('apps', 150, 250, { label: 'Apps & Services', sub: 'How they’re running', category: 'source', icon: 'apps' }),
     cnode('website', 150, 470, { label: 'Website', sub: 'Speed & errors', category: 'source', icon: 'globe' }),
     cnode('clickhouse', 540, 360, { label: 'ClickHouse', sub: 'Watches everything, all the time', category: 'clickhouse', icon: 'clickhouse', badge: 'Always on', stats: ['Billions of rows/sec', 'Sub-second search'], hero: true }),
@@ -81,6 +97,11 @@ export const ucGenai: DiagramDef = {
   description:
     'An AI assistant answers customer questions accurately by looking up the company’s own knowledge — manuals, FAQs and docs — stored in ClickHouse. Langfuse traces every conversation (also in ClickHouse) so the team can watch quality and improve the AI.',
   nodes: [
+    cnode('logo', 200, 24, { label: 'In production at', category: 'source', logos: [
+      { icon: 'wandb', name: 'Weights & Biases', url: 'https://clickhouse.com/blog/weights-and-biases-scale-ai-development' },
+      { icon: 'braintrust', name: 'Braintrust', url: 'https://clickhouse.com/blog/building-better-ai-products-faster-how-braintrust-uses-clickhouse-for-real-time-data-analysis' },
+      { icon: 'deepl', name: 'DeepL', url: 'https://clickhouse.com/blog/deepls-journey-with-clickhouse' },
+    ] }, { type: 'customer', w: 330 }),
     cnode('knowledge', 830, 80, { label: 'Company Knowledge', sub: 'Manuals · FAQs · docs', category: 'source', icon: 'docs' }),
     cnode('customer', 150, 350, { label: 'Customer', sub: 'Asks a question', category: 'source', icon: 'user' }),
     cnode('assistant', 490, 350, { label: 'AI Assistant', sub: 'Understands & replies', category: 'agent', icon: 'robot' }),

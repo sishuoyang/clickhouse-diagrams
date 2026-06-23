@@ -13,7 +13,7 @@ import {
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import { ServiceNode } from './ServiceNode'
-import { LiveDashboardNode, StoreTeamNode, HealthDashboardNode, OnCallSRENode } from './LiveNodes'
+import { LiveDashboardNode, StoreTeamNode, HealthDashboardNode, OnCallSRENode, CustomerBadge } from './LiveNodes'
 import { ParticleEdge } from './ParticleEdge'
 import { StageHeader, STAGE_WIDTH } from './StageHeader'
 import { theme } from '../theme'
@@ -27,6 +27,7 @@ const nodeTypes = {
   team: StoreTeamNode,
   healthdash: HealthDashboardNode,
   oncall: OnCallSRENode,
+  customer: CustomerBadge,
 }
 const edgeTypes = { particle: ParticleEdge }
 
@@ -54,6 +55,12 @@ const savedBtnStyle: React.CSSProperties = {
   background: theme.category.consume,
   color: theme.ink,
   border: `1px solid ${theme.category.consume}`,
+}
+const failedBtnStyle: React.CSSProperties = {
+  ...btnStyle,
+  background: '#3a2a2a',
+  color: '#FF8FA3',
+  border: '1px solid #FF8FA3',
 }
 
 function buildStageNodes(diagram: DiagramDef, hidden: boolean): Node[] {
@@ -88,13 +95,13 @@ function FlowCanvas({
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
   const [showStages, setShowStages] = useState(initialShowStages)
-  const [saved, setSaved] = useState(false)
+  const [saveState, setSaveState] = useState<'idle' | 'saved' | 'failed'>('idle')
   const nodesRef = useRef(nodes)
   nodesRef.current = nodes
 
   // Dragging, reconnecting, and toggling labels update the view live; nothing is written until
   // you click Save layout, which persists the current arrangement as the default loaded on startup.
-  const onSave = useCallback(() => {
+  const onSave = useCallback(async () => {
     const positions: Record<string, { x: number; y: number }> = {}
     for (const n of nodesRef.current) {
       // Persist every node except the stage (group) headers, which are derived, not user-placed.
@@ -111,9 +118,11 @@ function FlowCanvas({
         targetHandle: e.targetHandle ?? null,
       }
     }
-    saveLayout(diagram.id, { nodes: positions, edges: edgeOverrides, showStages })
-    setSaved(true)
-    window.setTimeout(() => setSaved(false), 1600)
+    // Only claim success if the dev/preview middleware actually stored it. On a static host
+    // (the deployed site) there is no backend, so report read-only instead of a false "saved".
+    const ok = await saveLayout(diagram.id, { nodes: positions, edges: edgeOverrides, showStages })
+    setSaveState(ok ? 'saved' : 'failed')
+    window.setTimeout(() => setSaveState('idle'), ok ? 1600 : 3200)
   }, [diagram.id, edges, showStages])
 
   const onReset = useCallback(() => {
@@ -156,6 +165,7 @@ function FlowCanvas({
       }}
       fitView
       fitViewOptions={{ padding: 0.16 }}
+      elevateEdgesOnSelect
       nodesDraggable={!capture}
       nodesConnectable={!capture}
       edgesReconnectable={!capture}
@@ -173,8 +183,26 @@ function FlowCanvas({
           position="top-right"
           style={{ marginTop: 60, display: 'flex', flexDirection: 'row', gap: 8 }}
         >
-          <button onClick={onSave} style={saved ? savedBtnStyle : primaryBtnStyle}>
-            {saved ? '✓ Saved as default' : '💾 Save layout'}
+          <button
+            onClick={onSave}
+            title={
+              saveState === 'failed'
+                ? 'This is a read-only static site — layouts can only be saved when running `npm run dev`.'
+                : 'Save the current arrangement as the default layout'
+            }
+            style={
+              saveState === 'saved'
+                ? savedBtnStyle
+                : saveState === 'failed'
+                  ? failedBtnStyle
+                  : primaryBtnStyle
+            }
+          >
+            {saveState === 'saved'
+              ? '✓ Saved as default'
+              : saveState === 'failed'
+                ? '⚠ Read-only (use npm run dev)'
+                : '💾 Save layout'}
           </button>
           <button onClick={onReset} style={btnStyle}>
             ⤺ Reset layout

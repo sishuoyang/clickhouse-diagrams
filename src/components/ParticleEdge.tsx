@@ -23,6 +23,7 @@ export function ParticleEdge(props: EdgeProps) {
   } = props
   const data = (props.data ?? {}) as FlowEdgeData
   const optional = data.variant === 'optional'
+  const selected = !!props.selected
   const speed = data.speed ?? 1
 
   const [edgePath, labelX, labelY] = getBezierPath({
@@ -47,8 +48,10 @@ export function ParticleEdge(props: EdgeProps) {
   // glowing, with larger particles so it stands out against the default muted edges.
   const emphasized = !!data.color
   const particleColor = data.color ?? (optional ? '#caa94e' : theme.yellow)
-  const stroke = emphasized ? data.color! : optional ? '#5a5440' : '#4d4a38'
-  const strokeWidth = emphasized ? 3 : optional ? 1.5 : 2
+  const baseStroke = emphasized ? data.color! : optional ? '#5a5440' : '#4d4a38'
+  // When selected (clicked), the line lights up so it's obvious which edge's ends are now grabbable.
+  const stroke = selected ? theme.yellow : baseStroke
+  const strokeWidth = selected ? Math.max(emphasized ? 3 : 2, 3.5) : emphasized ? 3 : optional ? 1.5 : 2
   const dash = optional ? (emphasized ? '12 7' : '6 6') : undefined
   const outerR = emphasized ? 13 : optional ? 7 : 9
   const innerR = emphasized ? 4.2 : optional ? 2.4 : 3.2
@@ -78,15 +81,15 @@ export function ParticleEdge(props: EdgeProps) {
         strokeWidth={20}
         className="react-flow__edge-interaction"
       />
-      {emphasized && (
-        // soft underglow so the highlighted route reads clearly
+      {(emphasized || selected) && (
+        // soft underglow so an emphasized route — or the currently-selected edge — reads clearly
         <path
           d={edgePath}
           fill="none"
-          stroke={data.color!}
-          strokeWidth={10}
+          stroke={selected ? theme.yellow : data.color!}
+          strokeWidth={selected ? 12 : 10}
           strokeLinecap="round"
-          opacity={0.18}
+          opacity={selected ? 0.3 : 0.18}
         />
       )}
       <path

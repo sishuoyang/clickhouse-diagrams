@@ -71,6 +71,41 @@ import cdc from './aws/cdc.svg?raw'
 import llm from './aws/llm.svg?raw'
 import server from './aws/server.svg?raw'
 
+// Google Cloud services (crafted in the Google palette)
+import pubsub from './gcp/pubsub.svg?raw'
+import dataflow from './gcp/dataflow.svg?raw'
+import cloudfunctions from './gcp/cloudfunctions.svg?raw'
+import cloudsql from './gcp/cloudsql.svg?raw'
+import alloydb from './gcp/alloydb.svg?raw'
+import bigtable from './gcp/bigtable.svg?raw'
+import gcs from './gcp/gcs.svg?raw'
+import dataplex from './gcp/dataplex.svg?raw'
+import datafusion from './gcp/datafusion.svg?raw'
+import looker from './gcp/looker.svg?raw'
+import gke from './gcp/gke.svg?raw'
+import gce from './gcp/gce.svg?raw'
+import cloudrun from './gcp/cloudrun.svg?raw'
+import cloudmonitoring from './gcp/cloudmonitoring.svg?raw'
+import vertexai from './gcp/vertexai.svg?raw'
+import apigee from './gcp/apigee.svg?raw'
+
+// Customer brand logos (real ClickHouse users featured on the use-case diagrams)
+import cloudflare from './brands/cloudflare.svg?raw'
+import gitlab from './brands/gitlab.svg?raw'
+import tesla from './brands/tesla.svg?raw'
+import openai from './brands/openai.svg?raw'
+import vimeo from './brands/vimeo.svg?raw'
+import lyft from './brands/lyft.svg?raw'
+import canva from './brands/canva.svg?raw'
+import netflix from './brands/netflix.svg?raw'
+import cisco from './brands/cisco.svg?raw'
+import deepl from './brands/deepl.svg?raw'
+import anthropic from './brands/anthropic.svg?raw'
+import wandb from './brands/weightsandbiases.svg?raw'
+import deepnote from './brands/deepnote.svg?raw'
+import tripcom from './brands/trip-dot-com.svg?raw'
+import braintrust from './brands/braintrust.svg?raw'
+
 // Friendly glyphs for the non-technical "use cases" diagrams
 import people from './aws/people.svg?raw'
 import cart from './aws/cart.svg?raw'
@@ -144,6 +179,37 @@ const raw = {
   cdc,
   llm,
   server,
+  pubsub,
+  dataflow,
+  cloudfunctions,
+  cloudsql,
+  alloydb,
+  bigtable,
+  gcs,
+  dataplex,
+  datafusion,
+  looker,
+  gke,
+  gce,
+  cloudrun,
+  cloudmonitoring,
+  vertexai,
+  apigee,
+  cloudflare,
+  gitlab,
+  tesla,
+  openai,
+  vimeo,
+  lyft,
+  canva,
+  netflix,
+  cisco,
+  deepl,
+  anthropic,
+  wandb,
+  deepnote,
+  tripcom,
+  braintrust,
 } as const
 
 export type IconKey = keyof typeof raw

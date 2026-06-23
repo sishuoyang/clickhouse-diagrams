@@ -5,6 +5,7 @@ import { observability } from './observability'
 import { mlgenai } from './mlgenai'
 import { ucRealtime, ucWarehouse, ucObservability, ucGenai } from './usecases'
 import { vnRealtime, vnWarehouse, vnObservability, vnGenai } from './vendorneutral'
+import { gcpRealtime, gcpWarehouse, gcpObservability, gcpMlGenai } from './googlecloud'
 
 export type Collection = {
   id: string
@@ -12,7 +13,8 @@ export type Collection = {
   diagrams: DiagramDef[]
 }
 
-// Two views the dropdown switches between: plain-language use cases, and technical architectures.
+// The views the sidebar switches between: plain-language use cases, and the AWS / Google Cloud /
+// vendor-neutral technical architectures.
 export const collections: Collection[] = [
   {
     id: 'usecase',
@@ -21,8 +23,13 @@ export const collections: Collection[] = [
   },
   {
     id: 'architecture',
-    label: 'Architecture Diagrams (AWS)',
+    label: 'Architecture (AWS)',
     diagrams: [realtime, warehouse, observability, mlgenai],
+  },
+  {
+    id: 'google-cloud',
+    label: 'Architecture (Google Cloud)',
+    diagrams: [gcpRealtime, gcpWarehouse, gcpObservability, gcpMlGenai],
   },
   {
     id: 'vendor-neutral',

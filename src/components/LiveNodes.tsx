@@ -585,3 +585,78 @@ export function OnCallSRENode({ data }: NodeProps<ServiceNodeType>) {
     </div>
   )
 }
+
+/**
+ * A "real customers" callout for the use-case diagrams: a dashed-bordered box (visually distinct
+ * from the solid pipeline nodes) holding 3–4 famous ClickHouse users' logos + names. Each chip
+ * links to that customer's public story on clickhouse.com.
+ */
+export function CustomerBadge({ data }: NodeProps<ServiceNodeType>) {
+  const logos = data.logos ?? []
+  return (
+    <div
+      style={{
+        border: `1.5px dashed ${theme.textMuted}99`,
+        borderRadius: 16,
+        padding: '11px 18px 14px',
+        background: 'rgba(255,255,255,0.025)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 11,
+      }}
+    >
+      <span style={{ fontSize: 9.5, letterSpacing: 1.4, color: theme.textMuted, fontWeight: 700 }}>
+        {(data.label ?? 'In production at').toUpperCase()}
+      </span>
+      <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+        {logos.map((l) => {
+          const chip = (
+            <>
+              <span
+                aria-label={l.name}
+                style={{ width: 30, height: 30, display: 'block' }}
+                dangerouslySetInnerHTML={{ __html: iconSvg(l.icon) ?? '' }}
+              />
+              <span
+                style={{
+                  fontSize: 11.5,
+                  fontWeight: 700,
+                  color: theme.text,
+                  textAlign: 'center',
+                  lineHeight: 1.15,
+                  maxWidth: 88,
+                }}
+              >
+                {l.name}
+              </span>
+            </>
+          )
+          const chipStyle: React.CSSProperties = {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 7,
+            textDecoration: 'none',
+          }
+          return l.url ? (
+            <a
+              key={l.name}
+              className="nodrag"
+              href={l.url}
+              target="_blank"
+              rel="noreferrer"
+              title={`Read the ${l.name} story`}
+              style={chipStyle}
+            >
+              {chip}
+            </a>
+          ) : (
+            <div key={l.name} style={chipStyle}>
+              {chip}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}

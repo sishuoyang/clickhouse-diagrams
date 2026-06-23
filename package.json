@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "render": "node scripts/render-gifs.mjs"
+    "render": "node scripts/render-gifs.mjs",
+    "build:static": "bash build-static.sh",
+    "deploy": "bash deploy-aws.sh"
   },
   "dependencies": {
     "@xyflow/react": "^12.3.5",

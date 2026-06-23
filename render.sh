@@ -27,20 +27,21 @@ ALL_IDS=()
 while IFS= read -r id; do [ -n "$id" ] && ALL_IDS+=("$id"); done \
   < <(grep -rhoE "id: '[^']+'" src/diagrams/*.ts \
         | sed "s/id: '//;s/'//" \
-        | grep -vxE "usecase|architecture|vendor-neutral" \
+        | grep -vxE "usecase|architecture|vendor-neutral|google-cloud" \
         | sort -u)
 
-AWS_IDS=();  VN_IDS=();  UC_IDS=()
+AWS_IDS=();  GCP_IDS=();  VN_IDS=();  UC_IDS=()
 for id in "${ALL_IDS[@]}"; do
   case "$id" in
-    vn-*) VN_IDS+=("$id") ;;
-    uc-*) UC_IDS+=("$id") ;;
-    *)    AWS_IDS+=("$id") ;;
+    gcp-*) GCP_IDS+=("$id") ;;
+    vn-*)  VN_IDS+=("$id") ;;
+    uc-*)  UC_IDS+=("$id") ;;
+    *)     AWS_IDS+=("$id") ;;
   esac
 done
 
 # Ordered list used for numbering in the menu and for resolving numeric selections.
-ORDERED=("${AWS_IDS[@]}" "${VN_IDS[@]}" "${UC_IDS[@]}")
+ORDERED=("${AWS_IDS[@]}" "${GCP_IDS[@]}" "${VN_IDS[@]}" "${UC_IDS[@]}")
 
 usage() { sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'; }
 
@@ -57,9 +58,10 @@ print_group() {
 }
 
 list_menu() {
-  print_group "Architecture (AWS)"        "${AWS_IDS[@]}"
-  print_group "Architecture (Vendor-Neutral)" "${VN_IDS[@]}"
-  print_group "Use Cases"                 "${UC_IDS[@]}"
+  print_group "Architecture (AWS)"             "${AWS_IDS[@]}"
+  print_group "Architecture (Google Cloud)"    "${GCP_IDS[@]}"
+  print_group "Architecture (Vendor-Neutral)"  "${VN_IDS[@]}"
+  print_group "Use Cases"                      "${UC_IDS[@]}"
   printf '\n    a) all\n'
 }
 

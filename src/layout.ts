@@ -41,18 +41,25 @@ export async function loadLayout(id: string): Promise<Layout> {
   }
 }
 
+/**
+ * Persist a layout. Returns true only if the dev/preview middleware actually stored it.
+ * On a static host (no middleware — e.g. the deployed S3 site) there is nowhere to write, so this
+ * returns false and the caller surfaces that instead of claiming a successful save.
+ */
 export async function saveLayout(
   id: string,
   layout: { nodes: PositionMap; edges: EdgeOverrideMap; showStages: boolean },
-): Promise<void> {
+): Promise<boolean> {
   try {
-    await fetch(`/__layout/${id}`, {
+    const res = await fetch(`/__layout/${id}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(layout),
     })
+    return res.ok
   } catch {
-    /* persistence is best-effort (e.g. on a static host without the middleware) */
+    // persistence is best-effort (e.g. a static host without the middleware)
+    return false
   }
 }
 

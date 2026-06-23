@@ -63,21 +63,37 @@ body.capture .react-flow__handle {
   opacity: 0 !important;
 }
 
-/* Edge reconnection anchors: when you hover an edge, show a grab dot at BOTH ends — the
-   originating (source/tail) end and the arrow (target/head) end — so either can be dragged
-   onto another node side. Hidden otherwise and always hidden in capture mode. */
+/* Edge reconnection anchors: grab dots at BOTH ends of an edge — the originating (source/tail)
+   end and the arrow (target/head) end — that can be dragged onto another node side.
+   Hovering an edge shows them faintly (discoverability); CLICKING an edge selects it and pins
+   both ends large, bright, and color-coded so you can grab the right one even where many lines
+   converge on one node. Always hidden in capture mode. */
 .react-flow__edgeupdater {
-  r: 9px;
+  r: 7px;
   fill: var(--ch-yellow);
   stroke: var(--ch-ink);
   stroke-width: 1.5;
   opacity: 0;
   cursor: grab;
-  transition: opacity 0.1s ease;
+  transition: opacity 0.1s ease, r 0.1s ease;
 }
-.react-flow__edge:hover .react-flow__edgeupdater,
+/* faint on hover so you know an edge is grabbable, without cluttering crowded nodes */
+.react-flow__edge:hover .react-flow__edgeupdater {
+  opacity: 0.4;
+}
+/* selected (clicked) edge: both ends become unmistakable and easy to grab */
 .react-flow__edge.selected .react-flow__edgeupdater {
-  opacity: 0.95;
+  opacity: 1;
+  r: 11px;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7));
+}
+/* color-code the two ends so the source (tail) and target (arrow) are distinguishable */
+.react-flow__edge.selected .react-flow__edgeupdater-source {
+  fill: var(--ch-yellow);
+}
+.react-flow__edge.selected .react-flow__edgeupdater-target {
+  fill: #5bd6e3;
 }
 body.capture .react-flow__edgeupdater {
   opacity: 0 !important;

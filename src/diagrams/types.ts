@@ -18,6 +18,8 @@ export type ServiceNodeData = {
   hero?: boolean
   /** Mark as part of ClickStack — adds a yellow highlight ring so the OTel/ClickHouse/HyperDX trio reads as one family */
   clickstack?: boolean
+  /** Customer logos for the dashed "in production at" panel on use-case diagrams. Each links to a story. */
+  logos?: { icon: string; name: string; url?: string }[]
   /** Allow Record<string, unknown> compatibility for React Flow */
   [key: string]: unknown
 }

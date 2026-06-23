@@ -96,6 +96,29 @@ automatically.
 
 Tune size / frame rate / loop length in [`scripts/render.config.mjs`](scripts/render.config.mjs).
 
+## Deploy as a static website (AWS S3)
+
+The app is a fully static bundle (Vite, `base: './'`), so it can be hosted anywhere. Two scripts
+cover build + deploy:
+
+```bash
+./build-static.sh                         # -> dist/  (npm run build:static)
+BUCKET=my-clickhouse-diagrams ./deploy-aws.sh   # upload to S3 website hosting (npm run deploy)
+```
+
+- **`build-static.sh`** runs the Vite build and additionally writes each saved `layouts/<id>.json`
+  to `dist/__layout/<id>`. In dev/preview those layouts are served by a Vite middleware; a static
+  host has no middleware, so materializing them means the deployed site renders the *same*
+  fine-tuned layouts as the GIFs. Diagrams without a saved layout fall back to the built-in
+  defaults automatically.
+- **`deploy-aws.sh`** (needs the AWS CLI configured) creates the bucket if missing, enables public
+  read, turns on S3 static website hosting, and `aws s3 sync`s `dist/` with good cache headers
+  (content-hashed assets are immutable + long-cached; `index.html` and the layout JSON are
+  `no-cache`). It prints the website endpoint when done.
+  - Env: `BUCKET` (required), `REGION` (default `us-east-1`), `AWS_PROFILE` (optional),
+    `CLOUDFRONT_DISTRIBUTION_ID` (optional — invalidates the CDN after each upload).
+  - S3 website endpoints are HTTP-only; put **CloudFront** in front for HTTPS and a custom domain.
+
 ## How the animation stays GIF-able
 
 Particle positions are a pure function of a looping `progress` value (`src/animation/clock.ts`).

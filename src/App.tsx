@@ -17,6 +17,15 @@ export default function App() {
   const initial = diagram && diagramById[diagram] ? diagram : defaultDiagramId
   const [activeId, setActiveId] = useState(initial)
   const [autoPlay, setAutoPlay] = useState(false)
+  const [collapsed, setCollapsed] = useState(
+    () => localStorage.getItem('sidebar-collapsed') === '1',
+  )
+  const toggleCollapsed = () =>
+    setCollapsed((v) => {
+      const next = !v
+      localStorage.setItem('sidebar-collapsed', next ? '1' : '0')
+      return next
+    })
   const active = diagramById[activeId] ?? diagrams[0]
   const activeCollection = collectionOf(activeId)
 
@@ -57,6 +66,8 @@ export default function App() {
           onSelect={setActiveId}
           autoPlay={autoPlay}
           onToggleAutoPlay={() => setAutoPlay((v) => !v)}
+          collapsed={collapsed}
+          onToggleCollapse={toggleCollapsed}
         />
       )}
       <main style={{ position: 'relative', flex: 1, height: '100%' }}>
